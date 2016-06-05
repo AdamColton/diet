@@ -2,18 +2,13 @@ package main
 
 // Everything is in terms of "per 100 g" (except for g, which is the amount of
 // that thing that you're eating).
-
-// perPound takes the price per pound and returns the price per 100 grams.
-func perPound(per100g float32) float32 {
-	return per100g * 0.220462
-}
-
 ////////////////////////////////////////////////////////////////////////////////
 
 type Grams float32
 
 const (
-	kg = 1000
+	kg       = 1000
+	perPound = 0.220462
 )
 
 func (g Grams) Of(f *food) *food {
@@ -44,7 +39,7 @@ var water = &food{
 var lentils = &food{
 	name:     "lentils",
 	g:        0.1 * kg,
-	dollars:  perPound(2.39) / 5,
+	dollars:  perPound * 2.39 / 5,
 	carbs:    20.13,
 	protein:  9.02,
 	fat:      0.38,
@@ -55,7 +50,7 @@ var lentils = &food{
 var spinach = &food{
 	name:     "spinach",
 	g:        0.1 * kg,
-	dollars:  perPound(4.29),
+	dollars:  perPound * 4.29,
 	carbs:    3.63,
 	protein:  2.86,
 	fat:      0.39,
@@ -66,7 +61,7 @@ var spinach = &food{
 var strawberries = &food{
 	name:     "strawberries",
 	g:        0.1 * kg,
-	dollars:  perPound(1.67),
+	dollars:  perPound * 1.67,
 	carbs:    9.13,
 	protein:  0.43,
 	fat:      0.11,
@@ -77,7 +72,7 @@ var strawberries = &food{
 var almonds = &food{
 	name:     "almonds",
 	g:        0.1 * kg,
-	dollars:  perPound(5.63),
+	dollars:  perPound * 5.63,
 	carbs:    21.55,
 	protein:  21.15,
 	fat:      49.93,
@@ -99,7 +94,7 @@ var hempSeeds = &food{
 var applesGala = &food{
 	name:     "apples, gala",
 	g:        0.1 * kg,
-	dollars:  perPound(2.50),
+	dollars:  perPound * 2.50,
 	carbs:    13.68,
 	protein:  0.25,
 	fat:      0.12,
