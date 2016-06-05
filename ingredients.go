@@ -16,9 +16,8 @@ const (
 	kg = 1000
 )
 
-func (grams Grams) Of(f *food) *food {
-	g := float32(grams)
-	r := (g / f.g)
+func (g Grams) Of(f *food) *food {
+	r := float32(g / f.g)
 	return &food{
 		name:     f.name,
 		g:        g,

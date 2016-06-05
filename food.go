@@ -5,7 +5,7 @@ import "fmt"
 type food struct {
 	name     string
 	dollars  float32
-	g        float32
+	g        Grams
 	carbs    float32
 	protein  float32
 	fat      float32
