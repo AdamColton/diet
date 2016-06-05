@@ -18,15 +18,16 @@ const (
 
 func (grams Grams) Of(f *food) *food {
 	g := float32(grams)
+	r := (g / f.g)
 	return &food{
 		name:     f.name,
 		g:        g,
-		dollars:  (g / f.g) * f.dollars,
-		carbs:    (g / f.g) * f.carbs,
-		protein:  (g / f.g) * f.protein,
-		fat:      (g / f.g) * f.fat,
-		fiber:    (g / f.g) * f.fiber,
-		calories: (g / f.g) * f.calories,
+		dollars:  r * f.dollars,
+		carbs:    r * f.carbs,
+		protein:  r * f.protein,
+		fat:      r * f.fat,
+		fiber:    r * f.fiber,
+		calories: r * f.calories,
 	}
 }
 
