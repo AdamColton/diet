@@ -2,60 +2,37 @@ package main
 
 import "sort"
 
-type sortable struct {
-	foods foods
-	less  func(int, int) bool
+type sortByFn func(*food, *food) bool
+
+type foodSorter struct {
+	foods []*food
+	by    sortByFn
 }
 
-func (s sortable) Len() int           { return len(s.foods) }
-func (s sortable) Swap(i, j int)      { s.foods[i], s.foods[j] = s.foods[j], s.foods[i] }
-func (s sortable) Less(i, j int) bool { return s.less(i, j) }
-
-func (fs foods) sortByName() foods {
-	sort.Sort(sortable{fs, func(i, j int) bool { return fs[i].name < fs[j].name }})
-	return fs
+func Sort(foods []*food) *foodSorter {
+	return &foodSorter{foods: foods}
 }
 
-func (fs foods) sortByDollars() foods {
-	sort.Sort(sortable{fs, func(i, j int) bool { return fs[i].dollars < fs[j].dollars }})
-	return fs
+func (s *foodSorter) By(sortBy sortByFn) {
+	s.by = sortBy
+	sort.Sort(s)
 }
 
-func (fs foods) sortByG() foods {
-	sort.Sort(sortable{fs, func(i, j int) bool { return fs[i].g < fs[j].g }})
-	return fs
-}
+func (s *foodSorter) Len() int           { return len(s.foods) }
+func (s *foodSorter) Swap(i, j int)      { s.foods[i], s.foods[j] = s.foods[j], s.foods[i] }
+func (s *foodSorter) Less(i, j int) bool { return s.by(s.foods[i], s.foods[j]) }
 
-func (fs foods) sortByNetCarbs() foods {
-	sort.Sort(sortable{fs, func(i, j int) bool { return fs[i].netCarbs() < fs[j].netCarbs() }})
-	return fs
-}
+func Name(food1, food2 *food) bool     { return food1.name < food2.name }
+func Dollars(food1, food2 *food) bool  { return food1.dollars < food2.dollars }
+func G(food1, food2 *food) bool        { return food1.g < food2.g }
+func NetCarbs(food1, food2 *food) bool { return food1.NetCarbs() < food2.NetCarbs() }
+func Protein(food1, food2 *food) bool  { return food1.protein < food2.protein }
+func Fat(food1, food2 *food) bool      { return food1.fat < food2.fat }
+func Fiber(food1, food2 *food) bool    { return food1.fiber < food2.fiber }
+func Calories(food1, food2 *food) bool { return food1.calories < food2.calories }
 
-func (fs foods) sortByProtein() foods {
-	sort.Sort(sortable{fs, func(i, j int) bool { return fs[i].protein < fs[j].protein }})
-	return fs
-}
-
-func (fs foods) sortByFat() foods {
-	sort.Sort(sortable{fs, func(i, j int) bool { return fs[i].fat < fs[j].fat }})
-	return fs
-}
-
-func (fs foods) sortByFiber() foods {
-	sort.Sort(sortable{fs, func(i, j int) bool { return fs[i].fiber < fs[j].fiber }})
-	return fs
-}
-
-func (fs foods) sortByCalories() foods {
-	sort.Sort(sortable{fs, func(i, j int) bool { return fs[i].calories < fs[j].calories }})
-	return fs
-}
-
-func (fs foods) reverse() foods {
-	// https://github.com/golang/go/wiki/SliceTricks
-	for i := len(fs)/2 - 1; i >= 0; i-- {
-		opp := len(fs) - 1 - i
-		fs[i], fs[opp] = fs[opp], fs[i]
+func Decending(sortBy sortByFn) sortByFn {
+	return func(food1, food2 *food) bool {
+		return !sortBy(food1, food2)
 	}
-	return fs
 }
